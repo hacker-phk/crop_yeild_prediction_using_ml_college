@@ -1,0 +1,57 @@
+@startuml
+class CropYieldPredictionSystem {
+    - data_preprocessing: DataPreprocessing
+    - feature_engineering: FeatureEngineering
+    - model_training: ModelTraining
+    - model_evaluation: ModelEvaluation
+    - model_deployment: ModelDeployment
+    
+    + predict_crop_yield(input_data: DataFrame) -> float
+}
+
+class DataPreprocessing {
+    + preprocess_data(raw_data: DataFrame) -> DataFrame
+}
+
+class FeatureEngineering {
+    + engineer_features(data: DataFrame) -> DataFrame
+}
+
+class ModelTraining {
+    + train_model(X_train: DataFrame, y_train: Series) -> Model
+}
+
+class ModelEvaluation {
+    + evaluate_model(model: Model, X_test: DataFrame, y_test: Series) -> EvaluationMetrics
+}
+
+class ModelDeployment {
+    + deploy_model(model: Model) -> DeploymentStatus
+}
+
+class Model {
+    - algorithm: str
+    - parameters: dict
+}
+
+class EvaluationMetrics {
+    - accuracy: float
+    - precision: float
+    - recall: float
+    - f1_score: float
+}
+
+enum DeploymentStatus {
+    SUCCESS
+    FAILED
+}
+
+CropYieldPredictionSystem *-down-> DataPreprocessing
+CropYieldPredictionSystem *-down-> FeatureEngineering
+CropYieldPredictionSystem *-down-> ModelTraining
+CropYieldPredictionSystem *-down-> ModelEvaluation
+CropYieldPredictionSystem *-down-> ModelDeployment
+ModelTraining *-right-> Model
+ModelEvaluation *-right-> EvaluationMetrics
+ModelDeployment *-down-> DeploymentStatus
+@enduml
